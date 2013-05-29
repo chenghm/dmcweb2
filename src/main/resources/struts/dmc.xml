@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="dmc"  extends="default" namespace="">
+	
+	<action name="userMgtAction" class="userMgtAction">
+		<result name="success">/user/userMgt.jsp</result>
+	
+	</action>
+	   <!--  <action name="login" >
+	        <result name="success">/index.jsp </result>
+	    </action> -->
+		<!-- dic -->
+		<!-- 
+		<action name="bankMgtAction" class="BankMgtAction">
+			<result name="input">/dic/bankMgt.jsp</result>
+			<result name="initAddSuccess">/dic/bankMgt.jsp</result>
+			<result name="initAddInput">/dic/bankMgt.jsp</result>
+			<result name="initModifySuccess">/dic/bankMgt.jsp</result>
+			<result name="initModifyInput">/dic/bankMgt.jsp</result>
+			<result name="addSuccess">/dic/bankMgt.jsp</result>
+			<result name="addInput">/dic/bankMgt.jsp</result>
+			<result name="mdfSuccess">/dic/bankMgt.jsp</result>
+			<result name="mdfInput">/dic/bankMgt.jsp</result>
+		</action>
+		<action name="rateMgtAction" class="RateMgtAction">
+			<result name="input">/dic/rateMgt.jsp</result>
+			<result name="initAddSuccess">/dic/rateMgt.jsp</result>
+			<result name="initAddInput">/dic/rateMgt.jsp</result>
+			<result name="addSuccess">/dic/rateMgt.jsp</result>
+			<result name="addInput">/dic/rateMgt.jsp</result>
+			<result name="initModifySuccess">/dic/rateMgt.jsp</result>
+			<result name="initModifyInput">/dic/rateMgt.jsp</result>
+			<result name="mdfSuccess">/dic/rateMgt.jsp</result>
+			<result name="mdfInput">/dic/rateMgt.jsp</result>
+			<result name="initBatchModifySuccess">/dic/brateMgt.jsp</result>
+			<result name="initBatchModifyInput">/dic/brateMgt.jsp</result>
+			<result name="mdfBatchSuccess">/dic/brateMgt.jsp</result>
+			<result name="mdfBatchInput">/dic/brateMgt.jsp</result>
+		</action>
+		<action name="shopMgtAction" class="ShopMgtAction">
+			<result name="input">/dic/shopMgt.jsp</result>
+			<result name="initAddSuccess">/dic/shopMgt.jsp</result>
+			<result name="initAddInput">/dic/shopMgt.jsp</result>
+			<result name="addSuccess">/dic/shopMgt.jsp</result>
+			<result name="addInput">/dic/shopMgt.jsp</result>
+			<result name="initModifySuccess">/dic/shopMgt.jsp</result>
+			<result name="initModifyInput">/dic/shopMgt.jsp</result>
+			<result name="mdfSuccess">/dic/shopMgt.jsp</result>
+			<result name="mdfInput">/dic/shopMgt.jsp</result>
+			<result name="initBatchModifySuccess">/dic/bshopMgt.jsp</result>
+			<result name="initBatchModifyInput">/dic/bshopMgt.jsp</result>
+			<result name="mdfBatchSuccess">/dic/bshopMgt.jsp</result>
+			<result name="mdfBatchInput">/dic/bshopMgt.jsp</result>
+		</action>
+
+		pos
+		<action name="posDetailAction" class="PosDetailAction">
+			<result name="initSuccess">/pos/posDetail.jsp</result>
+			<result name="input">/pos/posDetail.jsp</result>
+			<result name="success">/pos/posDetail.jsp</result>
+		</action>
+
+		<action name="posIncomeSumAction" class="PosIncomeSumAction">
+			<result name="initSuccess">/pos/posSummary.jsp</result>
+			<result name="input">/pos/posSummary.jsp</result>
+			<result name="success">/pos/posSummary.jsp</result>
+		</action>
+
+		bank
+		<action name="bankDetailSumAction" class="BankDetailSumAction">
+			<result name="initSuccess">/bank/bankDetailSum.jsp</result>
+			<result name="success">/bank/bankDetailSum.jsp</result>
+			<result name="input">/bank/bankDetailSum.jsp</result>
+		</action>
+		<action name="bankIncomeSumAction" class="BankIncomeSumAction">
+			<result name="initSuccess">/bank/ebankStatement.jsp</result>
+			<result name="input">/bank/ebankStatement.jsp</result>
+			<result name="success">/bank/ebankStatement.jsp</result>
+		</action>
+
+		report
+
+		<action name="reconDetailReportAction" class="ReconDetailReportAction">
+			<result name="initSuccess">/report/reconDetailReport.jsp</result>
+			<result name="success">/report/reconDetailReport.jsp</result>
+			<result name="input">/report/reconDetailReport.jsp</result>
+		</action>
+
+		<action name="reconSumReportAction" class="ReconSumReportAction">
+			<result name="initSuccess">/report/reconSumReport.jsp</result>
+			<result name="success">/report/reconSumReport.jsp</result>
+			<result name="input">/report/reconSumReport.jsp</result>
+		</action>
+ -->
+	</package>
+</struts>    

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans    
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd    
+	http://www.springframework.org/schema/context    
+	http://www.springframework.org/schema/context/spring-context-3.1.xsd    
+	http://www.springframework.org/schema/tx    
+	http://www.springframework.org/schema/tx/spring-tx-3.1.xsd  
+	http://www.springframework.org/schema/jee 
+	http://www.springframework.org/schema/jee/spring-jee-3.1.xsd  
+	http://www.springframework.org/schema/aop     
+	http://www.springframework.org/schema/aop/spring-aop-3.1.xsd"
+	default-lazy-init="false">
+
+	<context:property-placeholder location="classpath:jdbc.properties" />
+	<!-- <bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean"> 
+		<property name="defaultTimeout" value="500000" /> </bean> <bean id="transactionManager" 
+		class="org.springframework.transaction.jta.JtaTransactionManager"> <property 
+		name="userTransaction" ref="jotm" /> </bean> <bean id="jdbcdmc" class="org.enhydra.jdbc.pool.StandardXAPoolDataSource" 
+		destroy-method="shutdown"> <property name="transactionManager" ref="jotm" 
+		/> </bean> -->
+
+	<bean id="dataSource" name="datasource"
+		class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init"
+		destroy-method="close">
+		<property name="uniqueResourceName" value="mysqlDataSource" />
+			<!-- <value>jdbcdmc</value>
+		</property> -->
+		<property name="xaDataSourceClassName">
+			<!-- 使用Mysql XADataSource(mysql>=5.0, Connector/J>=5.0才可以支持XADatasource) -->
+			<value>com.mysql.jdbc.jdbc2.optional.MysqlXADataSource</value>
+		</property>
+		<property name="xaProperties">
+			<props>
+				<prop key="URL">${jdbc.url}</prop>
+				<!-- jdbc\:mysql\://127.0.0.1\:3306/dataBaseName?autoReconnect\=true -->
+				<prop key="user">${jdbc.username}</prop>
+				<prop key="password">${jdbc.password}</prop>
+				<prop key="pinGlobalTxToPhysicalConnection">true</prop>
+			</props>
+		</property>
+
+		<property name="poolSize" value="3" />
+		<property name="maxPoolSize" value="100" />
+		<property name="minPoolSize" value="1" />
+		<property name="testQuery" value="select 1" />
+	</bean>
+
+	<bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager"
+		init-method="init" destroy-method="close" depends-on="userTransactionService">
+		<!-- When close is called, should we force transactions to terminate? -->
+		<property name="forceShutdown" value="false" />
+		<!-- Do not create a transaction service as we have specified the bean 
+			in this file -->
+		<property name="startupTransactionService" value="false" />
+	</bean>
+	<bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
+		<property name="transactionTimeout" value="300" />
+	</bean>
+
+	<bean id="userTransactionService" class="com.atomikos.icatch.config.UserTransactionServiceImp"
+		init-method="init" destroy-method="shutdownForce">
+		<constructor-arg>
+			<!-- IMPORTANT: specify all Atomikos properties here -->
+			<props>
+				<prop key="com.atomikos.icatch.service">com.atomikos.icatch.standalone.UserTransactionServiceFactory
+				</prop>
+				<prop key="com.atomikos.icatch.output_dir">target/</prop>
+				<prop key="com.atomikos.icatch.log_base_dir">target/</prop>
+			</props>
+		</constructor-arg>
+	</bean>
+
+
+	<bean id="transactionManager"
+		class="org.springframework.transaction.jta.JtaTransactionManager">
+		<property name="transactionManager" ref="atomikosTransactionManager" />
+		<property name="userTransaction" ref="atomikosUserTransaction" />
+		<property name="allowCustomIsolationLevels" value="true" />
+	</bean>
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="MYSQLPU" />
+		<property name="persistenceXmlLocation" value="classpath:jpa/persistence.xml" />
+		<!-- <property name="jpaPropertyMap"> <map> <entry key="hibernate.transaction.manager_lookup_class" 
+			value="org.hibernate.transaction.JOTMTransactionManagerLookup" /> <entry 
+			key="hibernate.transaction.flush_before_completion" value="true" /> <entry 
+			key="hibernate.transaction.auto_close_session" value="true" /> <entry key="hibernate.current_session_context_class" 
+			value="jta" /> <entry key="hibernate.connection.release_mode" value="auto" 
+			/> </map> </property> -->
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<context:annotation-config />
+
+	<bean id="throwsAdvice" class="com.cinsec.dmc.base.exception.advice.DmcExceptionAdvice" />
+	<bean
+		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="beanNames">
+			<list>
+				<value>*Service</value>
+			</list>
+		</property>
+		<property name="interceptorNames">
+			<value>throwsAdvice</value>
+		</property>
+	</bean>
+
+	<!-- <tx:advice id="txAdvice" transaction-manager="transactionManager"> 
+		<tx:attributes> <tx:method name="get*" read-only="true" /> <tx:method name="find" 
+		read-only="true" /> <tx:method name="check" read-only="true" /> <tx:method 
+		name="*" read-only="false" /> </tx:attributes> </tx:advice> <aop:config> 
+		<aop:pointcut id="txPointcut" expression="execution(public * xx.yy.mypacke..*Service.*(..))" 
+		/> <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut" /> </aop:config> -->
+
+	<context:component-scan base-package="com.cinsec" />
+	<aop:aspectj-autoproxy />
+
+	<!-- <bean id="atomikosSystemProps"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject">
+			System.getProperties()
+			<bean
+				class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+				<property name="targetClass" value="java.lang.System" />
+				<property name="targetMethod" value="getProperties" />
+			</bean>
+		</property>
+		<property name="targetMethod" value="putAll" />
+		<property name="arguments">
+			<props>
+				<prop key="com.atomikos.icatch.hide_init_file_path">true</prop>
+			</props>
+		</property>
+	</bean> -->
+</beans>

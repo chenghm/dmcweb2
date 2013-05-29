@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+	<!-- 保存上下文于Bean工厂类 BeanFactory -->
+	<bean class="com.cinsec.dmc.base.util.ContextFactory" />
+
+	<bean id="ActionTemplate" abstract="true">
+		<property name="baseService" ref="BaseService" />
+	</bean>
+
+	<bean id="ServiceTemplate" abstract="true">
+		<property name="baseDao" ref="BaseDao" />
+	</bean>
+
+	<bean id="ServiceAppTemplate" abstract="true">
+		<property name="baseDao" ref="BaseDao" />
+		<property name="baseAppDao" ref="BaseAppDao" />
+	</bean>
+
+	<bean id="BaseService" class="com.cinsec.dmc.base.service.impl.BaseImpl">
+		<property name="baseDao" ref="BaseDao" />
+	</bean>
+
+	<bean id="BaseAppService" class="com.cinsec.dmc.base.service.impl.BaseAppImpl">
+		<property name="baseDao" ref="BaseDao" />
+		<property name="baseAppDao" ref="BaseAppDao" />
+	</bean>
+
+	<bean id="BaseDao" class="com.cinsec.dmc.base.dao.impl.BaseDao" />
+	<bean id="BaseAppDao" class="com.cinsec.dmc.base.dao.impl.BaseAppDao" />
+	
+</beans>
