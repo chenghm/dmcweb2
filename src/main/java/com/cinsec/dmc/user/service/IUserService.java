@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.cinsec.dmc.base.exception.DmcBizException;
-import com.cinsec.dmc.user.entity.Role;
 import com.cinsec.dmc.user.entity.User;
 
 public interface IUserService {
@@ -19,16 +18,16 @@ public interface IUserService {
 
     void deleteUser(int id);
 
-    void deleteUsers(List<Integer> ids);
+    void deleteUsers(String ids);
 
     int modifyUser(User user) throws DmcBizException;
 
     User getCurrentUser();
 
     void setCurrentUser(User user);
-    
+
     long getUsersCount();
-    
+
     Map<Integer, String> getRoles();
 
 }
