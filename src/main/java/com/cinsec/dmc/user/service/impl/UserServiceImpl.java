@@ -34,7 +34,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User getUser(int id) {
-        
+
         return userDao.getUser(id);
     }
 
@@ -75,21 +75,26 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     @Transactional
-    public void deleteUsers(List<Integer> ids) {
-       for(Integer id:ids){
-           deleteUser(id);
-       }
+    public void deleteUsers(String userIds) {
+        String[] ids = userIds.split(",");
+        for (String id : ids) {
+            deleteUser(Integer.valueOf(id));
+        }
     }
 
     @Override
     @Transactional
     public int modifyUser(User user) throws DmcBizException {
         User u = findUserByUsername(user.getUsername());
-        if (u != null) {
+        if (u != null && u.getId() != user.getId()) {
             throw new DmcBizException("用户名已存在！");
         }
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
+        String password = userDao.getUser(user.getId()).getPassword();// 原有password
+        if (!password.equals(user.getPassword())) {// 如果密码有修改 就加密
+            String encodedPassword = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encodedPassword);
+        }
+
         Integer currentUserId = this.getCurrentUser().getId();
         Date currentTime = new Date();
         user.setUpdatedTime(currentTime);

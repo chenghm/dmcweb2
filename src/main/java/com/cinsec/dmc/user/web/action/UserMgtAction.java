@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -42,7 +41,7 @@ public class UserMgtAction extends ActionSupport {
     private String roleIdMsg;
     private String msg;
     private int userId;
-    private List<Integer> userIds;
+    private String userIds;
     private User user;
     private int success = 0;
 
@@ -94,12 +93,12 @@ public class UserMgtAction extends ActionSupport {
     }
 
     public String batchDelete() {
-        if (CollectionUtils.isEmpty(userIds)) {
+        if (StringUtils.isEmpty(userIds)) {
             return null;
         }
 
         userService.deleteUsers(userIds);
-        return "deleteSuccess";
+        return null;
     }
 
     public String initModify() {
@@ -116,14 +115,14 @@ public class UserMgtAction extends ActionSupport {
             return Action.INPUT;
         }
 
-        User user = new User();
+       /* User user = new User();
         user.setId(userId);
         user.setUsername(username);
         user.setPassword(password);
         Role role = new Role();
         role.setId(roleId);
         role.addUser(user);
-        user.setRole(role);
+        user.setRole(role);*/
         try {
             userService.modifyUser(user);
         } catch (DmcBizException e) {
@@ -191,11 +190,10 @@ public class UserMgtAction extends ActionSupport {
 
     private boolean validateData() {
         boolean result = true;
-
-        if (StringUtils.isEmpty(user.getUsername())) {
+        String username = user.getUsername();
+        if (StringUtils.isEmpty(username)) {
 
             this.addFieldError("user.username", "用户名不能为空！");
-            // usernameMsg = "用户名不能为空！";
             result = false;
         }
 
@@ -210,7 +208,7 @@ public class UserMgtAction extends ActionSupport {
         }
 
         if (user.getRole().getId() == 0) {
-            this.addFieldError("user.role.id", "请选择角色！！");
+            this.addFieldError("user.role.id", "请选择角色！");
             // roleIdMsg = "清选择角色！";
             result = false;
         }
@@ -250,11 +248,11 @@ public class UserMgtAction extends ActionSupport {
         this.msg = msg;
     }
 
-    public List<Integer> getUserIds() {
+    public String getUserIds() {
         return userIds;
     }
 
-    public void setUserIds(List<Integer> userIds) {
+    public void setUserIds(String userIds) {
         this.userIds = userIds;
     }
 
