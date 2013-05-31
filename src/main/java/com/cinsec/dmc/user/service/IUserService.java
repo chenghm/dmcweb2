@@ -30,4 +30,8 @@ public interface IUserService {
 
     Map<Integer, String> getRoles();
 
+    boolean validatePassword(String password);
+
+    void modifyPassword(String newPassword);
+
 }

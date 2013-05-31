@@ -52,6 +52,10 @@
 				 <param name="ignoreHierarchy">false</param>  
                 <param name="includeProperties">actionErrors\[\d+\], fieldErrors\..+$, actionMessages\[\d+\]</param>  
 			</result>
+			<result name="json" type="json">
+				 <param name="ignoreHierarchy">false</param>  
+                <param name="includeProperties">actionErrors\[\d+\], fieldErrors\..+$, actionMessages\[\d+\]</param>  
+			</result>
 			<result name="deleteSuccess" type="redirect">/userMgtAction!findAll</result>
 			<result name="modifySuccess" type="json">
 				 <param name="ignoreHierarchy">false</param>  
