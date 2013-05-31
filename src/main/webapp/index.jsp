@@ -13,9 +13,10 @@
 	href="${pageContext.request.contextPath}/resources/css/style.css" />
 <%-- <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script> --%>
-	
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/start/jquery-ui.css" />
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script> 
+
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.10.3/themes/start/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
 <script type="text/javascript"
@@ -36,51 +37,26 @@
 				"<img src='resources/img/plus.gif' class='statusicon' />",
 				"<img src='resources/img/minus.gif' class='statusicon' />" ], //Additional HTML added to the header when it's collapsed and expanded, respectively  ["position", "html1", "html2"] (see docs)
 		animatespeed : "fast", //speed of animation: integer in milliseconds (ie: 200), or keywords "fast", "normal", or "slow"
-		
+
 		onopenclose : function(header, index, state, isuseractivated) { //custom code to run whenever a header is opened or closed
 			//do nothing
 		}
 	});
 	/* if (window != top)   
-		top.location.href = location.href;  */  
+		top.location.href = location.href;  */
 </script>
 <script
 	src="${pageContext.request.contextPath}/resources/js/jquery.jclock-1.2.0.js.txt"
 	type="text/javascript"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/jconfirmaction.jquery.js"></script>
-
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/jupdatepasswordaction.jquery.js"></script>
 <script type="text/javascript">
-
 	$(document).ready(function() {
 		$('.ask').jConfirmAction();
 		$('a').jLoadAction();
-
-		//${pageContext.request.contextPath}/logout
-
-		/* $('.ask').click(function(e) {
-			alert();
-			
-			e.preventDefault();
-			thisHref	= $(this).attr('href');
-			
-			if($(this).next('div.question').length <= 0)
-				$(this).after('<div class="question">Are you sure?<br/> <span class="yes">Yes</span><span class="cancel">Cancel</span></div>');
-			
-			$('.question').animate({opacity: 1}, 300);
-			
-			$('.yes').live('click', function(){
-				window.location = thisHref;
-			});
-			
-			$('.cancel').live('click', function(){
-				$(this).parents('div.question').fadeOut(300, function() {
-					$(this).remove();
-				});
-			});
-			
-		}); */
-
+		$(this).jUpdatePasswordAction();
 	});
 </script>
 <script type="text/javascript">
@@ -108,11 +84,68 @@
 			<div class="right_header">
 				Welcome
 				<sec:authentication property="principal.username" />
-				| <a href="${pageContext.request.contextPath}/logout" class="ask">退出<img
+				| <a href="" id="update-password">修改密码</a> | <a href="${pageContext.request.contextPath}/logout" class="ask">退出<img
 					src="${pageContext.request.contextPath}/resources/img/user_logout.png"
 					border="0" align="absbottom" /></a>
 			</div>
 			<div class="jclock"></div>
+			<div id="password-dialog" title="修改密码">
+				<form id="password-form">
+					<fieldset>
+						<dl>
+							<dd>
+								<span style="color: red" id="error_msg"></span>
+							</dd>
+						</dl>
+						<dl>
+							<dt>
+								<label for="currentPassword">原密码:</label>
+							</dt>
+							<dd>
+								<input type="password" name="currentPassword"
+									id="currentPassword" size="32" maxlength="128"
+									value="${currentPassword }"
+									class="text ui-widget-content ui-corner-all" /> <font
+									color="red">*</font> <span style="color: red"
+									id="error_current_password"></span>
+							</dd>
+						</dl>
+						<dl>
+							<dt>
+								<label for="newPassword">新密码:</label>
+							</dt>
+							<dd>
+								<input type="password" name="newPassword" id="newPassword"
+									size="32" maxlength="128" value="${newPassword }"
+									class="text ui-widget-content ui-corner-all" /> <font
+									color="red">*</font> <span style="color: red"
+									id="error_new_password"></span>
+							</dd>
+						</dl>
+						<dl>
+							<dt>
+								<label for="confirmPassword">确认密码:</label>
+							</dt>
+							<dd>
+								<input type="password" name="confirmPassword"
+									id="confirmPassword" size="32" maxlength="128"
+									value="${confirmPassword }"
+									class="text ui-widget-content ui-corner-all" /> <font
+									color="red">*</font> <span style="color: red"
+									id="error_confirm_password"></span>
+							</dd>
+						</dl>
+
+					</fieldset>
+				</form>
+			</div>
+			<div id="message-dialog" title="修改密码">
+				<p>
+					<span class="ui-icon ui-icon-circle-check"
+						style="float: left; margin: 0 7px 50px 0;"></span> 修改密码成功！
+				</p>
+			</div>
+
 		</div>
 
 		<div class="main_content">
@@ -120,8 +153,8 @@
 			<div class="menu">
 				<ul>
 					<li><a class="current" href="index.html">Admin Home</a></li>
-					<li><a >Manage Categories<!--[if IE 7]><!--></a>
-						<!--<![endif]--> <!--[if lte IE 6]><table><tr><td><![endif]-->
+					<li><a>Manage Categories<!--[if IE 7]><!--></a> <!--<![endif]-->
+						<!--[if lte IE 6]><table><tr><td><![endif]-->
 						<ul>
 							<li><a href="" title="">Lorem ipsum dolor sit amet</a></li>
 							<li><a href="" title="">Lorem ipsum dolor sit amet</a></li>
@@ -257,7 +290,8 @@
 								<li><a href="">Sidebar submenu</a></li>
 							</ul>
 						</div>
-						<a class="menuitem" href="${pageContext.request.contextPath}/userMgtAction!findAll">用户管理</a>
+						<a class="menuitem"
+							href="${pageContext.request.contextPath}/userMgtAction!findAll">用户管理</a>
 						<a class="menuitem" href="">Blue button</a> <a
 							class="menuitem_green" href="">Green button</a> <a
 							class="menuitem_red" href="">Red button</a>
