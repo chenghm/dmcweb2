@@ -31,16 +31,7 @@
 					modal : true,
 					buttons : {
 						"保存" : function() {
-							//allFields.removeClass( "ui-state-error" );
-							//	tips.removeClass("ui-state-highlight");
 							tips.html("");
-
-							/* var url;
-							if(userId==""||userId==0||userId=="0"){
-								url='userMgtAction!add';//add
-							}else{
-								url='userMgtAction!modify';//modify
-							} */
 							$.ajax({
 								type : 'post',
 								url : url,
@@ -97,7 +88,6 @@
 					},
 					close : function() {
 						allFields.val("");
-						//	roleId.val(0);
 						tips.html("");
 					}
 				});
@@ -194,66 +184,7 @@
 		$('.ask').jConfirmLoadAction();
 		$('a').jLoadAction();
 	});
-
-	function blurPassword(obj) {
-		var val = obj.value;
-	}
 </script>
-<style>
-
-/* body { font-size: 62.5%; } */
-/* label,input,select,span {
-	display: inline;
-} */
-input.text {
-	margin-bottom: 12px;
-	/* width: 95%; */
-	padding: .4em;
-}
-
-option.text {
-	margin-bottom: 12px;
-	/* width: 95%; */
-	padding: .4em;
-}
-
-fieldset {
-	padding: 0;
-	border: 0;
-	margin-top: 25px;
-}
-
-h1 {
-	font-size: 1.2em;
-	margin: .6em 0;
-}
-
-/*div#users-contain {
-	width: 350px;
-	margin: 20px 0;
-}
-
- div#users-contain table {
-	margin: 1em 0;
-	border-collapse: collapse;
-	width: 100%;
-}
-
-div#users-contain table td,div#users-contain table th {
-	border: 1px solid #eee;
-	padding: .6em 10px;
-	text-align: left;
-}
-
-.ui-dialog .ui-state-error {
-	padding: .3em;
-}
-
-.validateTips {
-	border: 1px solid transparent;
-	padding: 0.3em;
-} */
-</style>
 <title>用戶管理</title>
 </head>
 <body>
@@ -266,7 +197,6 @@ div#users-contain table td,div#users-contain table th {
 				<th scope="col" class="rounded-company"></th>
 				<th scope="col" class="rounded">序列</th>
 				<th scope="col" class="rounded">用户名</th>
-				<!--   <th scope="col" class="rounded">密码</th> -->
 				<th scope="col" class="rounded">角色</th>
 				<th scope="col" class="rounded">编辑</th>
 				<th scope="col" class="rounded-q4">删除</th>
@@ -298,7 +228,6 @@ div#users-contain table td,div#users-contain table th {
 						</c:choose></td>
 					<td>${status.index+1 }</td>
 					<td>${user.username }</td>
-					<%-- <td>${user.password }</td> --%>
 					<td>${user.role.descn }</td>
 
 					<td><a
@@ -324,9 +253,9 @@ div#users-contain table td,div#users-contain table th {
 		class="bt_green_r"></span></a>
 	<a href="" class="bt_red" id="delete-user"><span class="bt_red_lft"></span><strong>删除</strong><span
 		class="bt_red_r"></span></a>
-		
+
 	<p:pages pageNo="${pageNo }" total="${pages }" />
-	<div id="dialog-form" title="用户信息" >
+	<div id="dialog-form" title="用户信息">
 		<form id="userForm">
 			<fieldset>
 				<dl>
@@ -387,7 +316,7 @@ div#users-contain table td,div#users-contain table th {
 			</fieldset>
 		</form>
 	</div>
-	<div id="dialog-message" title="删除">
+	<div id="dialog-message" title="删除用户">
 		<p>
 			<span class="ui-icon ui-icon-circle-check"
 				style="float: left; margin: 0 7px 50px 0;"></span> 请至少选择一条记录！

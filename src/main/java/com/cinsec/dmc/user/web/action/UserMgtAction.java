@@ -3,7 +3,6 @@ package com.cinsec.dmc.user.web.action;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -44,12 +43,14 @@ public class UserMgtAction extends ActionSupport {
     private String userIds;
     private User user;
     private int success = 0;
+    private String currentPassword;
+    private String newPassword;
+    private String confirmPassword;
 
     private static final long serialVersionUID = 5239501706741520424L;
     private List<User> users;
 
     public String findAll() throws Exception {
-        // users = userService.getUsers(pageNo);
         return SUCCESS;
     }
 
@@ -98,7 +99,25 @@ public class UserMgtAction extends ActionSupport {
         }
 
         userService.deleteUsers(userIds);
-        return null;
+        return "deleteSuccess";
+    }
+
+    public String modifyPassword() {
+        if (StringUtils.isEmpty(currentPassword)) {
+            this.addFieldError("error_current_password", "当前密码不能为空！");
+        } else if (!userService.validatePassword(currentPassword)) {
+            this.addFieldError("error_current_password", "当前密码不正确！");
+        } else if (StringUtils.isEmpty(newPassword)) {
+            this.addFieldError("error_new_password", "新密码不能为空！");
+        } else if (newPassword.length() < 6) {
+            this.addFieldError("error_new_password", "新密码长度不能小于6位！");
+        } else if (!newPassword.equals(confirmPassword)) {
+            this.addFieldError("error_confirm_password", "两次密码不一致！");
+        } else {
+            userService.modifyPassword(newPassword);
+        }
+
+        return "json";
     }
 
     public String initModify() {
@@ -115,14 +134,10 @@ public class UserMgtAction extends ActionSupport {
             return Action.INPUT;
         }
 
-       /* User user = new User();
-        user.setId(userId);
-        user.setUsername(username);
-        user.setPassword(password);
-        Role role = new Role();
-        role.setId(roleId);
-        role.addUser(user);
-        user.setRole(role);*/
+        /*
+         * User user = new User(); user.setId(userId); user.setUsername(username); user.setPassword(password); Role role
+         * = new Role(); role.setId(roleId); role.addUser(user); user.setRole(role);
+         */
         try {
             userService.modifyUser(user);
         } catch (DmcBizException e) {
@@ -284,6 +299,30 @@ public class UserMgtAction extends ActionSupport {
 
     public void setSuccess(int success) {
         this.success = success;
+    }
+
+    public String getCurrentPassword() {
+        return currentPassword;
+    }
+
+    public void setCurrentPassword(String currentPassword) {
+        this.currentPassword = currentPassword;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
 }

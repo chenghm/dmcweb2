@@ -25,6 +25,7 @@ public class UserServiceImpl implements IUserService {
 
     private IUserDao userDao;
     private final PasswordEncoder passwordEncoder;
+    private User currentUser;
 
     @Autowired
     public UserServiceImpl(IUserDao userDao, PasswordEncoder passwordEncoder) {
@@ -115,6 +116,14 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public boolean validatePassword(String password) {
+        String encodedPassword = passwordEncoder.encode(password);
+        System.out.println( currentUser.getPassword());
+        System.out.println(encodedPassword);
+        return currentUser.getPassword().equals(encodedPassword);
+    }
+
+    @Override
     public void setCurrentUser(User user) {
         Collection<? extends GrantedAuthority> authorities = userDao.getAuthorities(user);
         Authentication authentication = new UsernamePasswordAuthenticationToken(user, user.getPassword(), authorities);
@@ -129,6 +138,15 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Map<Integer, String> getRoles() {
         return userDao.getRoles();
+    }
+
+    @Override
+    public void modifyPassword(String newPassword) {
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        currentUser.setPassword(encodedPassword);
+        currentUser.setUpdatedTime(new Date());
+        currentUser.setUpdatedUserId(currentUser.getId());
+        userDao.modifyUser(currentUser);
     }
 
 }
