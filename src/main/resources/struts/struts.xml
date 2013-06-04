@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
 <struts>
-
 	<!-- 加载struts文件 -->
 	<include file="struts-default.xml"></include>
 	<include file="struts-plugin.xml"></include>
-
+	<!-- <constant name="struts.objectFactory" value="spring" /> -->
 	<constant name="struts.i18n.encoding" value="UTF-8" />
-	<constant name="struts.devMode" value="true" />
+	<constant name="struts.devMode" value="false" />
 	<!-- 加i18n配置文件 -->
 	<constant name="struts.custom.i18n.resources" value="i18n.messages" />
 
@@ -15,56 +14,57 @@
 	<!-- <include file="core.xml"></include> <include file="dmc.xml"></include> -->
 
 	<package name="dmc" extends="json-default" namespace="/">
+		<!-- <global-results> <result name="json" type="json"> </result> </global-results> -->
 
-
-		<!-- <global-results>
-			<result name="input" type="json">
-				<param name="ignoreHierarchy">false</param>
-				<param name="includeProperties">actionErrors\[\d+\], fieldErrors\..+$,
-					actionMessages\[\d+\]</param>
-			</result>
-			<result name="error" type="json">
-				<param name="ignoreHierarchy">false</param>
-				<param name="includeProperties">actionErrors\[\d+\], fieldErrors\..+$,
-					actionMessages\[\d+\]</param>
-			</result>
-			<result name="Exception" type="json">
-				<param name="ignoreHierarchy">false</param>
-				<param name="includeProperties">actionErrors\[\d+\], fieldErrors\..+$,
-					actionMessages\[\d+\]</param>
-			</result>
+		<!-- <global-results> <result name="input" type="json"> <param name="ignoreHierarchy">false</param> 
+			<param name="includeProperties">actionErrors\[\d+\], fieldErrors\..+$, actionMessages\[\d+\]</param> 
+			</result> <result name="error" type="json"> <param name="ignoreHierarchy">false</param> 
+			<param name="includeProperties">actionErrors\[\d+\], fieldErrors\..+$, actionMessages\[\d+\]</param> 
+			</result> <result name="Exception" type="json"> <param name="ignoreHierarchy">false</param> 
+			<param name="includeProperties">actionErrors\[\d+\], fieldErrors\..+$, actionMessages\[\d+\]</param> 
+			</result> </global-results> <global-exception-mappings> <exception-mapping 
+			exception="java.lang.Throwable" result="Exception" /> </global-exception-mappings> -->
+<default-interceptor-ref name="notFound">/errors/403.jsp</default-interceptor-ref>
+		<global-results>
+			<result name="accessException">/errors/403.jsp</result>
+			<result name="notFound">/errors/403.jsp</result>
 		</global-results>
 		<global-exception-mappings>
-			<exception-mapping exception="java.lang.Throwable"
-				result="Exception" />
+			<exception-mapping result="accessException"
+				exception="org.springframework.security.AccessDeniedException" name="accessException"></exception-mapping>
 		</global-exception-mappings>
- -->
 
-		<action name="userMgtAction" class="com.cinsec.dmc.user.web.action.UserMgtAction">
-		    <interceptor-ref name="jsonValidationWorkflowStack" /> 
+		<action name="userMgtAction" class="userMgtAction" >
+			<interceptor-ref name="jsonValidationWorkflowStack" />
 			<result name="success">/user/userMgt.jsp</result>
 			<result name="initAddSuccess"> /user/userAdd.jsp</result>
 			<result name="addSuccess" type="json">
-				 <param name="ignoreHierarchy">false</param>  
-                <param name="includeProperties">actionErrors\[\d+\], fieldErrors\..+$, actionMessages\[\d+\]</param>  
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">actionErrors\[\d+\], fieldErrors\..+$,
+					actionMessages\[\d+\]</param>
 			</result>
 			<result name="input" type="json">
-				 <param name="ignoreHierarchy">false</param>  
-                <param name="includeProperties">actionErrors\[\d+\], fieldErrors\..+$, actionMessages\[\d+\]</param>  
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">actionErrors\[\d+\], fieldErrors\..+$,
+					actionMessages\[\d+\]</param>
 			</result>
 			<result name="json" type="json">
-				 <param name="ignoreHierarchy">false</param>  
-                <param name="includeProperties">actionErrors\[\d+\], fieldErrors\..+$, actionMessages\[\d+\]</param>  
+				<!-- <param name="root">dataMap</param> </result> -->
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">actionStatus,actionErrors\[\d+\],
+					fieldErrors\..+$, actionMessages\[\d+\]</param>
 			</result>
-			<result name="deleteSuccess" type="redirect">/userMgtAction!findAll</result>
+			<result name="deleteSuccess" type="redirect">/userMgtAction!findAll
+			</result>
 			<result name="modifySuccess" type="json">
-				 <param name="ignoreHierarchy">false</param>  
-                <param name="includeProperties">actionErrors\[\d+\], fieldErrors\..+$, actionMessages\[\d+\]</param>  
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">actionErrors\[\d+\], fieldErrors\..+$,
+					actionMessages\[\d+\]</param>
 			</result>
-			<result name="initModifySuccess" type="json" >
-			 <!--     <param name="ignoreHierarchy">false</param>  
-                <param name="includeProperties">user,actionErrors\[\d+\], fieldErrors\..+$, actionMessages\[\d+\]</param> -->
-			 </result>
+			<result name="initModifySuccess" type="json">
+				<!-- <param name="ignoreHierarchy">false</param> <param name="includeProperties">user,actionErrors\[\d+\], 
+					fieldErrors\..+$, actionMessages\[\d+\]</param> -->
+			</result>
 
 		</action>
 	</package>

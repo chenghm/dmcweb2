@@ -46,7 +46,9 @@ public class UserDetailServiceImpl implements UserDetailsService,Serializable {
             setId(user.getId());
             setUsername(user.getUsername());
             setPassword(user.getPassword());
+            setRole(user.getRole());
         }
+        
 
         public Collection<? extends GrantedAuthority> getAuthorities() {
             return userDao.getAuthorities(this);
@@ -67,6 +69,8 @@ public class UserDetailServiceImpl implements UserDetailsService,Serializable {
         public boolean isEnabled() {
             return true;
         }
+        
     }
 
+   
 }

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,8 +26,6 @@ public class UserServiceImpl implements IUserService {
 
     private IUserDao userDao;
     private final PasswordEncoder passwordEncoder;
-    private User currentUser;
-
     @Autowired
     public UserServiceImpl(IUserDao userDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
@@ -117,10 +116,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public boolean validatePassword(String password) {
-        String encodedPassword = passwordEncoder.encode(password);
-        System.out.println( currentUser.getPassword());
-        System.out.println(encodedPassword);
-        return currentUser.getPassword().equals(encodedPassword);
+    return passwordEncoder.matches(password, getCurrentUser().getPassword());
     }
 
     @Override
@@ -141,12 +137,16 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    @Transactional
     public void modifyPassword(String newPassword) {
-        String encodedPassword = passwordEncoder.encode(newPassword);
-        currentUser.setPassword(encodedPassword);
-        currentUser.setUpdatedTime(new Date());
-        currentUser.setUpdatedUserId(currentUser.getId());
-        userDao.modifyUser(currentUser);
+			String encodedPassword = passwordEncoder.encode(newPassword);
+			User user = new User();
+			user.setId(getCurrentUser().getId());
+			user.setPassword(encodedPassword);
+			user.setUpdatedTime(new Date());
+			user.setUpdatedUserId(user.getId());
+			userDao.modifyPassword(user);
     }
+    
 
 }

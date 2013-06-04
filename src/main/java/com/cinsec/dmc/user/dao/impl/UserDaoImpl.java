@@ -2,6 +2,7 @@ package com.cinsec.dmc.user.dao.impl;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,10 +74,26 @@ public class UserDaoImpl implements IUserDao,Serializable {
         // TODO Auto-generated method stub
 
     }
+    
+    @Override
+    public int modifyPassword(User user){
+//    	entityManager.
+    	
+    	Query query =entityManager.createQuery("update User u set u.password= :password, u.updatedTime =:updatedTime,  u.updatedUserId=:updatedUserId where u.id=:id");
+    	query.setParameter("password", user.getPassword()).setParameter("updatedTime", new Date()).setParameter("updatedUserId", user.getId()).setParameter("id",user.getId());
+    return 	query.executeUpdate();
+    	
+    	
+    }
 
     @Override
     public int modifyUser(User user) {
-        entityManager.merge(user);
+        try {
+			entityManager.merge(user);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
         return 1;
     }
 

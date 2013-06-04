@@ -39,10 +39,12 @@
 				<!-- jdbc\:mysql\://127.0.0.1\:3306/dataBaseName?autoReconnect\=true -->
 				<prop key="user">${jdbc.username}</prop>
 				<prop key="password">${jdbc.password}</prop>
+				<!-- <prop key="removeAbandoned">true</prop> -->
+				<!-- <prop key="removeAbandonedTimeout">600</prop> -->
 				<prop key="pinGlobalTxToPhysicalConnection">true</prop>
 			</props>
 		</property>
-
+		<property name="reapTimeout" value="6000" />
 		<property name="poolSize" value="3" />
 		<property name="maxPoolSize" value="100" />
 		<property name="minPoolSize" value="1" />
@@ -52,13 +54,14 @@
 	<bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager"
 		init-method="init" destroy-method="close" depends-on="userTransactionService">
 		<!-- When close is called, should we force transactions to terminate? -->
+		 <!-- <property name="transactionTimeout" value="3000" /> -->
 		<property name="forceShutdown" value="false" />
 		<!-- Do not create a transaction service as we have specified the bean 
 			in this file -->
 		<property name="startupTransactionService" value="false" />
 	</bean>
 	<bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
-		<property name="transactionTimeout" value="300" />
+		<property name="transactionTimeout" value="3000" />
 	</bean>
 
 	<bean id="userTransactionService" class="com.atomikos.icatch.config.UserTransactionServiceImp"

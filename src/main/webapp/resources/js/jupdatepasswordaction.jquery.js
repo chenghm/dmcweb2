@@ -21,21 +21,23 @@
 								dataType : 'json',
 								data : $("#password-form").serialize(),
 								success : function(json) {
-									var flag = true;
+									if (json.actionStatus=="success") {
+										
+										$("#password-dialog").dialog("close");
+										$("#message-content").html("修改密码成功！");
+										$("#message-dialog").dialog("open");
+									}else
 									$.each(json.fieldErrors, function(index,
 											obj) {
 										$("#" + index).html(obj[0]);
-										flag = false;
-
 									});
-									if (flag) {
-										$("#password-dialog").dialog("close");
-										$("#message-dialog").dialog("open");
-									}
-
 								},
 								error : function(response, status, xhr) {
-									if (status == "timeout") {
+									$("#password-dialog").dialog("close");
+									alert("发生错误,请重试:"+response.responseText);
+									
+									
+									/*if (status == "timeout") {
 
 										$("#dialog-form").empty().html(
 												'<p>Plese Try Again</p>');
@@ -53,7 +55,7 @@
 										if (xhr == "Internal Server Error") {
 
 										}
-									}
+									}*/
 								}
 							});
 

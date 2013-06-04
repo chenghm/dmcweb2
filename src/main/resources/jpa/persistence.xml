@@ -16,5 +16,7 @@
 			<property name="hibernate.current_session_context_class" value="jta"/>
 			<property name="hibernate.connection.release_mode" value="auto"/>
 		</properties>
+			<class>com.cinsec.dmc.user.entity.User</class>
+		<class>com.cinsec.dmc.user.entity.Role</class>
 	</persistence-unit>
 </persistence>

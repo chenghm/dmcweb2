@@ -29,4 +29,6 @@ public interface IUserDao {
     
      Map<Integer, String> getRoles();
 
+	int modifyPassword(User user);
+
 }

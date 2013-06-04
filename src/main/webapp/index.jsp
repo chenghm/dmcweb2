@@ -99,7 +99,7 @@
 						</dl>
 						<dl>
 							<dt>
-								<label for="currentPassword">原密码:</label>
+								<label for="currentPassword">当前密码:</label>
 							</dt>
 							<dd>
 								<input type="password" name="currentPassword"
@@ -142,7 +142,8 @@
 			<div id="message-dialog" title="修改密码">
 				<p>
 					<span class="ui-icon ui-icon-circle-check"
-						style="float: left; margin: 0 7px 50px 0;"></span> 修改密码成功！
+						style="float: left; margin: 0 7px 50px 0;"></span>
+						<span id="message-content"></span>
 				</p>
 			</div>
 
@@ -290,8 +291,10 @@
 								<li><a href="">Sidebar submenu</a></li>
 							</ul>
 						</div>
+						<sec:authorize access="hasRole('ROLE_ADMIN')">
 						<a class="menuitem"
 							href="${pageContext.request.contextPath}/userMgtAction!findAll">用户管理</a>
+						</sec:authorize>
 						<a class="menuitem" href="">Blue button</a> <a
 							class="menuitem_green" href="">Green button</a> <a
 							class="menuitem_red" href="">Red button</a>

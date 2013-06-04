@@ -1,11 +1,13 @@
 package com.cinsec.dmc.user.web.action;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import com.cinsec.dmc.base.exception.DmcBizException;
@@ -22,8 +24,14 @@ public class UserMgtAction extends ActionSupport {
     private IUserService userService;
 
     // private UserVo userVo;
-    // private Map<String,Object> dataMap;
-
+    // private Map<String,Object> dataMap;	
+    private String actionStatus= Action.NONE;
+    private Map<String, Object> dataMap = new HashMap<String, Object>();
+    
+    /*public UserMgtAction(){
+    	dataMap = new HashMap<String, Object>();
+    }
+*/
     @Autowired
     public UserMgtAction(IUserService userService) {
         this.userService = userService;
@@ -103,21 +111,46 @@ public class UserMgtAction extends ActionSupport {
     }
 
     public String modifyPassword() {
+    	String result = "json";
+    	boolean flag = true;
         if (StringUtils.isEmpty(currentPassword)) {
             this.addFieldError("error_current_password", "当前密码不能为空！");
-        } else if (!userService.validatePassword(currentPassword)) {
-            this.addFieldError("error_current_password", "当前密码不正确！");
-        } else if (StringUtils.isEmpty(newPassword)) {
+            flag = false;
+        } 
+        
+        if (StringUtils.isEmpty(newPassword)) {
             this.addFieldError("error_new_password", "新密码不能为空！");
+            flag = false;
         } else if (newPassword.length() < 6) {
             this.addFieldError("error_new_password", "新密码长度不能小于6位！");
-        } else if (!newPassword.equals(confirmPassword)) {
-            this.addFieldError("error_confirm_password", "两次密码不一致！");
-        } else {
-            userService.modifyPassword(newPassword);
+            flag = false;
         }
+        if(StringUtils.isEmpty(confirmPassword)){
+        	 this.addFieldError("error_confirm_password", "确认密码不能为空！");
+             flag = false;
+        }
+        if(!flag){
+        	return result;
+        }
+        
+        if (!userService.validatePassword(currentPassword)) {
+            this.addFieldError("error_current_password", "当前密码不正确！");
+            return result;
+        } 
+        
+        if (!newPassword.equals(confirmPassword)) {
+            this.addFieldError("error_confirm_password", "两次密码不一致！");
+            return result;
+        } 
+            try {
+				userService.modifyPassword(newPassword);
+				actionStatus =Action.SUCCESS;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
-        return "json";
+            
+        return result;
     }
 
     public String initModify() {
@@ -324,5 +357,17 @@ public class UserMgtAction extends ActionSupport {
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
     }
+
+	public String getActionStatus() {
+		return actionStatus;
+	}
+
+	public void setActionStatus(String actionStatus) {
+		this.actionStatus = actionStatus;
+	}
+
+/*	public Map<String, Object> getDataMap() {
+		return dataMap;
+	}*/
 
 }

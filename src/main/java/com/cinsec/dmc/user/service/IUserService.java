@@ -3,6 +3,8 @@ package com.cinsec.dmc.user.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.security.RolesAllowed;
+
 import com.cinsec.dmc.base.exception.DmcBizException;
 import com.cinsec.dmc.user.entity.User;
 
@@ -14,6 +16,7 @@ public interface IUserService {
 
     int createUser(User user) throws DmcBizException;
 
+    @RolesAllowed("ROLE_ADMIN")
     List<User> getUsers(int pageNo);
 
     void deleteUser(int id);
