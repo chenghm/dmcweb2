@@ -38,29 +38,23 @@
 								dataType : 'json',
 								data : $("#userForm").serialize(),
 								success : function(json) {
-									var flag = true;
-									$.each(json.actionMessages, function(index,
-											obj) {
-										$("#error_msg").html(obj);
-										flag = false;
-									});
-									$.each(json.fieldErrors, function(index,
-											obj) {
-										$(
-												"#error_"
-														+ index.replace(".",
-																"_").replace(
-																".", "_"))
-												.html(obj[0]);
-										flag = false;
-
-									});
-									if (flag) {
+									if (json.actionStatus=="success") {
 										$("#dialog-form").dialog("close");
 										$('.right_content').load(
 												"userMgtAction!findAll");
 
+									}else {
+									$.each(json.actionMessages, function(index,
+											obj) {
+										$("#error_msg").html(obj);
+									});
+									$.each(json.fieldErrors, function(index,
+											obj) {
+												$("#"+index).html(obj);
+
+									});
 									}
+									
 
 								},
 								error : function(response, status, xhr) {
@@ -98,10 +92,12 @@
 			$("#dialog-form").dialog("open");
 		});
 		$("a[name='editLink']").bind('click', function(e) {
+			alert($("#elementOnLoginPage").length);
 			e.preventDefault();
 			url = 'userMgtAction!modify';//modify
 			var thisHref = $(this).attr('href');
-			$.getJSON(thisHref, function(data) {
+			$.getJSON(thisHref, function(data,status,xhr) {
+				alert(status);
 				$("#dialog-form").dialog("open");
 				$("#user\\.id").val(data.user.id);
 				$("#user\\.username").val(data.user.username);

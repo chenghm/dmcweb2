@@ -29,7 +29,7 @@
 									}else
 									$.each(json.fieldErrors, function(index,
 											obj) {
-										$("#" + index).html(obj[0]);
+										$("#" + index).html(obj);
 									});
 								},
 								error : function(response, status, xhr) {

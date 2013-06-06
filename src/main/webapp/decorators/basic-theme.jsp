@@ -11,9 +11,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>IN ADMIN PANEL | Powered by INDEZINER</title>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/style.css" />
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/ddaccordion.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/style.css" />
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/ddaccordion.js"></script>
 <script type="text/javascript">
 	ddaccordion.init({
 		headerclass : "submenuheader", //Shared CSS class name of headers group
@@ -38,7 +41,8 @@
 		}
 	})
 </script>
-<script src="${pageContext.request.contextPath}/resources/js/jquery.jclock-1.2.0.js.txt"
+<script
+	src="${pageContext.request.contextPath}/resources/js/jquery.jclock-1.2.0.js.txt"
 	type="text/javascript"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/jconfirmaction.jquery.js"></script>
@@ -94,13 +98,17 @@
 
 		<div class="header">
 			<div class="logo">
-				<a href="#"><img src="${pageContext.request.contextPath}/resources/img/logo.gif" alt="" title=""
-					border="0" /></a>
+				<a href="#"><img
+					src="${pageContext.request.contextPath}/resources/img/logo.gif"
+					alt="" title="" border="0" /></a>
 			</div>
 
 			<div class="right_header">
-				Welcome <sec:authentication property="principal.username" />  | <a
-					href="${pageContext.request.contextPath}/logout" class="ask">退出<img src="${pageContext.request.contextPath}/resources/img/user_logout.png" border="0" align="absbottom" /></a>
+				Welcome
+				<sec:authentication property="principal.username" />
+				| <a href="${pageContext.request.contextPath}/logout" class="ask">退出<img
+					src="${pageContext.request.contextPath}/resources/img/user_logout.png"
+					border="0" align="absbottom" /></a>
 			</div>
 			<div class="jclock"></div>
 		</div>
@@ -247,9 +255,11 @@
 								<li><a href="">Sidebar submenu</a></li>
 							</ul>
 						</div>
-						<a class="menuitem" href="${pageContext.request.contextPath}/userMgtAction!findAll"  target="rightContent">用戶管理</a> <a class="menuitem"
-							href="">Blue button</a> <a class="menuitem_green" href="">Green
-							button</a> <a class="menuitem_red" href="">Red button</a>
+						<a class="menuitem"
+							href="${pageContext.request.contextPath}/userMgtAction!findAll"
+							target="rightContent">用戶管理</a> <a class="menuitem" href="">Blue
+							button</a> <a class="menuitem_green" href="">Green button</a> <a
+							class="menuitem_red" href="">Red button</a>
 
 					</div>
 
@@ -351,7 +361,8 @@
 			</div>
 			<div class="right_footer">
 				<a href="http://indeziner.com"><img
-					src="${pageContext.request.contextPath}/resources/img/indeziner_logo.gif" alt="" title="" border="0" /></a>
+					src="${pageContext.request.contextPath}/resources/img/indeziner_logo.gif"
+					alt="" title="" border="0" /></a>
 			</div>
 
 		</div>

@@ -27,8 +27,7 @@
 		class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init"
 		destroy-method="close">
 		<property name="uniqueResourceName" value="mysqlDataSource" />
-			<!-- <value>jdbcdmc</value>
-		</property> -->
+		<!-- <value>jdbcdmc</value> </property> -->
 		<property name="xaDataSourceClassName">
 			<!-- 使用Mysql XADataSource(mysql>=5.0, Connector/J>=5.0才可以支持XADatasource) -->
 			<value>com.mysql.jdbc.jdbc2.optional.MysqlXADataSource</value>
@@ -54,7 +53,7 @@
 	<bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager"
 		init-method="init" destroy-method="close" depends-on="userTransactionService">
 		<!-- When close is called, should we force transactions to terminate? -->
-		 <!-- <property name="transactionTimeout" value="3000" /> -->
+		<!-- <property name="transactionTimeout" value="3000" /> -->
 		<property name="forceShutdown" value="false" />
 		<!-- Do not create a transaction service as we have specified the bean 
 			in this file -->
@@ -125,21 +124,10 @@
 	<context:component-scan base-package="com.cinsec" />
 	<aop:aspectj-autoproxy />
 
-	<!-- <bean id="atomikosSystemProps"
-		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="targetObject">
-			System.getProperties()
-			<bean
-				class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-				<property name="targetClass" value="java.lang.System" />
-				<property name="targetMethod" value="getProperties" />
-			</bean>
-		</property>
-		<property name="targetMethod" value="putAll" />
-		<property name="arguments">
-			<props>
-				<prop key="com.atomikos.icatch.hide_init_file_path">true</prop>
-			</props>
-		</property>
-	</bean> -->
+	<!-- <bean id="atomikosSystemProps" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"> 
+		<property name="targetObject"> System.getProperties() <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"> 
+		<property name="targetClass" value="java.lang.System" /> <property name="targetMethod" 
+		value="getProperties" /> </bean> </property> <property name="targetMethod" 
+		value="putAll" /> <property name="arguments"> <props> <prop key="com.atomikos.icatch.hide_init_file_path">true</prop> 
+		</props> </property> </bean> -->
 </beans>

@@ -94,8 +94,8 @@ function confirmExit(){
 
 			</fieldset>
 			<fieldset class="action">
-				<input type="submit" value="保存" id="saveBtn" /> <input type="button"
-					name="cancel" id="cancelBtn" value="取消" />
+				<input type="submit" value="保存" id="saveBtn" /> <input
+					type="button" name="cancel" id="cancelBtn" value="取消" />
 			</fieldset>
 		</form>
 	</div>

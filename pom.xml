@@ -47,13 +47,9 @@
 					</configuration>
 				</configuration>
 			</plugin>
-			<!-- <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<argLine>-Dcom.atomikos.icatch.hide_init_file_path=true</argLine>
-				</configuration>
-			</plugin> -->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-surefire-plugin</artifactId> 
+				<configuration> <argLine>-Dcom.atomikos.icatch.hide_init_file_path=true</argLine> 
+				</configuration> </plugin> -->
 		</plugins>
 	</build>
 	<dependencies>
@@ -106,21 +102,12 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>4.2.0.Final</version>
 			<scope>compile</scope>
-			<!-- <exclusions>
-				<exclusion>
-					<artifactId>slf4j-api</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-			</exclusions> -->
+			<!-- <exclusions> <exclusion> <artifactId>slf4j-api</artifactId> <groupId>org.slf4j</groupId> 
+				</exclusion> </exclusions> -->
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.slf4j</groupId> <artifactId>slf4j-api</artifactId> 
+			</dependency> <dependency> <groupId>org.slf4j</groupId> <artifactId>slf4j-log4j12</artifactId> 
+			</dependency> -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
@@ -145,7 +132,7 @@
 			<version>${spring.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
@@ -188,7 +175,7 @@
 			<version>${struts.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.hibernate.java-persistence</groupId>
 			<artifactId>jpa-api</artifactId>
@@ -256,11 +243,13 @@
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 			<version>6.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-log4j12</artifactId>
-				<version>1.6.1</version>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.6.1</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>commons-logging</groupId>
@@ -319,82 +308,29 @@
 		<m2eclipse.wtp.contextRoot>dmcweb2</m2eclipse.wtp.contextRoot>
 		<project.build.sourceEncoding>UTF8</project.build.sourceEncoding>
 	</properties>
-	<!-- <dependencyManagement>
-		<dependencies>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
-			<version>${spring.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-asm</artifactId>
-			<version>${spring.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-			<version>${spring.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-			<version>${spring.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>${spring.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-expression</artifactId>
-			<version>${spring.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>${spring.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
-			<version>${spring.version}</version>
-			<scope>compile</scope>
-		</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>1.7.5</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-log4j12</artifactId>
-				<version>1.7.5</version>
-			</dependency>
-			<dependency>
-				<groupId>javassist</groupId>
-				<artifactId>javassist</artifactId>
-				<version>3.12.0.GA</version>
-			</dependency>
-			<dependency>
-				<groupId>commons-collections</groupId>
-				<artifactId>commons-collections</artifactId>
-				<version>3.1</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement> -->
+	<!-- <dependencyManagement> <dependencies> <dependency> <groupId>org.springframework</groupId> 
+		<artifactId>spring-aop</artifactId> <version>${spring.version}</version> 
+		<scope>compile</scope> </dependency> <dependency> <groupId>org.springframework</groupId> 
+		<artifactId>spring-asm</artifactId> <version>${spring.version}</version> 
+		<scope>compile</scope> </dependency> <dependency> <groupId>org.springframework</groupId> 
+		<artifactId>spring-beans</artifactId> <version>${spring.version}</version> 
+		<scope>compile</scope> </dependency> <dependency> <groupId>org.springframework</groupId> 
+		<artifactId>spring-context</artifactId> <version>${spring.version}</version> 
+		<scope>compile</scope> </dependency> <dependency> <groupId>org.springframework</groupId> 
+		<artifactId>spring-context-support</artifactId> <version>${spring.version}</version> 
+		<scope>compile</scope> </dependency> <dependency> <groupId>org.springframework</groupId> 
+		<artifactId>spring-core</artifactId> <version>${spring.version}</version> 
+		<scope>compile</scope> </dependency> <dependency> <groupId>org.springframework</groupId> 
+		<artifactId>spring-expression</artifactId> <version>${spring.version}</version> 
+		<scope>compile</scope> </dependency> <dependency> <groupId>org.springframework</groupId> 
+		<artifactId>spring-jdbc</artifactId> <version>${spring.version}</version> 
+		<scope>compile</scope> </dependency> <dependency> <groupId>org.springframework</groupId> 
+		<artifactId>spring-tx</artifactId> <version>${spring.version}</version> <scope>compile</scope> 
+		</dependency> <dependency> <groupId>org.slf4j</groupId> <artifactId>slf4j-api</artifactId> 
+		<version>1.7.5</version> </dependency> <dependency> <groupId>org.slf4j</groupId> 
+		<artifactId>slf4j-log4j12</artifactId> <version>1.7.5</version> </dependency> 
+		<dependency> <groupId>javassist</groupId> <artifactId>javassist</artifactId> 
+		<version>3.12.0.GA</version> </dependency> <dependency> <groupId>commons-collections</groupId> 
+		<artifactId>commons-collections</artifactId> <version>3.1</version> </dependency> 
+		</dependencies> </dependencyManagement> -->
 </project>

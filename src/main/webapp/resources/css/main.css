@@ -1,110 +1,131 @@
 * {
-    margin: 0;
-    padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
-html, body {
-    height: 100%;
+html,body {
+	height: 100%;
 }
+
 body {
-    background-color: #FFFFFF;
+	background-color: #FFFFFF;
 }
+
 #header-container {
-    color: #FFFFFF;
-    background-color: #000000;
+	color: #FFFFFF;
+	background-color: #000000;
 }
-#header, .nav li {
-    padding: .25em;
-    padding-top: 2em;
+
+#header,.nav li {
+	padding: .25em;
+	padding-top: 2em;
 }
+
 .nav-account {
-    float: right;
+	float: right;
 }
+
 .nav {
-    display: inline;
+	display: inline;
 }
+
 .inner {
-    margin: 0 auto;
-    width: 65%;
-    padding: 1em;
+	margin: 0 auto;
+	width: 65%;
+	padding: 1em;
 }
+
 .nav li:after {
-    content: ' |';
+	content: ' |';
 }
+
 .nav li:last-child:after {
-    content: '';
+	content: '';
 }
 
 .nav li {
-    display: inline;
-    list-style-type: none;
+	display: inline;
+	list-style-type: none;
 }
-.nav a, th {
-    color: #FFFFFF;
+
+.nav a,th {
+	color: #FFFFFF;
 }
+
 a:hover {
-    text-decoration: none;
+	text-decoration: none;
 }
 
 #title {
-    margin: .25em 0;
+	margin: .25em 0;
 }
 
 #create {
-    margin-top: 1em;
-    float: right;
+	margin-top: 1em;
+	float: right;
 }
+
 table {
-    width: 100%;
+	width: 100%;
 }
 
 tr:nth-child(even) {
-    background-color: #EEEEEE;
+	background-color: #EEEEEE;
 }
 
 th {
-    background-color: #f79232;
+	background-color: #f79232;
 }
+
 td {
-    padding: .25em;
+	padding: .25em;
 }
+
 #content li {
-    margin: 1em;
+	margin: 1em;
 }
+
 legend {
-    display: none;
+	display: none;
 }
+
 fieldset {
-    border-width: 0;
+	border-width: 0;
 }
 
 label {
-    display: block;
-    margin: .5em .5em .5em 0;
-    font-weight: bold;
+	display: block;
+	margin: .5em .5em .5em 0;
+	font-weight: bold;
 }
+
 label[for=remember] {
-    display: inline-block;
+	display: inline-block;
 }
+
 textarea {
-    width: 95%;
-    height: 10em;
+	width: 95%;
+	height: 10em;
 }
+
 input {
-    padding: .15em;
+	padding: .15em;
 }
+
 input[type=text] {
-    width: 25em;
+	width: 25em;
 }
+
 #submit {
-    margin-top: 1em;
+	margin-top: 1em;
 }
 
 .errors {
-    color: red;
+	color: red;
 }
+
 .success {
-    color: green;
-    font-weight: bold;
-    font-size: 1.5em;
+	color: green;
+	font-weight: bold;
+	font-size: 1.5em;
 }

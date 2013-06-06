@@ -1,10 +1,13 @@
 package com.cinsec.dmc.user.web.action;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.security.RolesAllowed;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,54 +15,48 @@ import org.springframework.stereotype.Controller;
 
 import com.cinsec.dmc.base.exception.DmcBizException;
 import com.cinsec.dmc.base.util.Constants;
+import com.cinsec.dmc.base.util.LogUtils;
+import com.cinsec.dmc.base.web.action.BaseAction;
 import com.cinsec.dmc.user.entity.Role;
 import com.cinsec.dmc.user.entity.User;
 import com.cinsec.dmc.user.service.IUserService;
 import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionSupport;
 
 @Controller
 @Scope(value = "prototype")
-public class UserMgtAction extends ActionSupport {
+public class UserMgtAction extends BaseAction{
+    
+    private static Log log = LogFactory.getLog(UserMgtAction.class);
     private IUserService userService;
 
-    // private UserVo userVo;
-    // private Map<String,Object> dataMap;	
-    private String actionStatus= Action.NONE;
-    private Map<String, Object> dataMap = new HashMap<String, Object>();
-    
-    /*public UserMgtAction(){
-    	dataMap = new HashMap<String, Object>();
-    }
-*/
     @Autowired
     public UserMgtAction(IUserService userService) {
         this.userService = userService;
     }
+    
+    public UserMgtAction(){
+        
+    }
 
+    private String actionStatus = Action.NONE;
     private long pages;
     private int pageNo = 1;
     private Map<Integer, String> roles;
-    private String username;
-    private String password;
-    private int roleId;
-    private String usernameMsg;
-    private String passwordMsg;
-    private String roleIdMsg;
-    private String msg;
     private int userId;
     private String userIds;
     private User user;
-    private int success = 0;
     private String currentPassword;
     private String newPassword;
     private String confirmPassword;
-
-    private static final long serialVersionUID = 5239501706741520424L;
     private List<User> users;
+//    private Map<String, String> fieldErrors = new LinkedHashMap<String, String>();
+//    private List<String> actionMessages = new LinkedList<String>();
+//    private String currentUser;
 
-    public String findAll() throws Exception {
-        return SUCCESS;
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String findAll() {
+        LogUtils.info(log, "查询用户成功："+getCurrentUser().getUsername());
+        return "findSuccess";
     }
 
     public long getPages() {
@@ -68,56 +65,57 @@ public class UserMgtAction extends ActionSupport {
         return pages;
     }
 
-    public String initAdd() {
-        return "initAddSuccess";
-    }
-
     public String add() {
+        String result = "json";
         if (!validateData()) {
-            return Action.INPUT;
+                LogUtils.debug(log,"添加用户数据验证失败："+getCurrentUser().getUsername()); 
+                addDataMap();
+            return result;
         }
-        /*
-         * User user = new User(); user.setUsername(username); user.setPassword(password); Role role = new Role();
-         * role.setId(roleId); role.addUser(user); user.setRole(role);
-         */
         try {
             userService.createUser(user);
+           
             user = new User();
-            // this.addActionMessage( "添加成功！");
+            setActionStatus(Action.SUCCESS);
+            addDataMap();
+            LogUtils.info(log,"添加用户成功："+getCurrentUser().getUsername());
+            return result;
         } catch (DmcBizException e) {
-            this.addActionMessage("添加失败：" + e.getMessage());
-            // msg = "添加失败：" + e.getMessage();
-            return Action.INPUT;
+            this.addActionMessage("添加用户失败：" + e.getMessage());
+            addDataMap();
+            LogUtils.error(log,"添加用户失败："+e.getMessage()+"："+getCurrentUser().getUsername());
+            return result;
         }
-        return "addSuccess";
-
     }
 
     public String delete() {
         if (userId == 0) {
+            LogUtils.warn(log,"删除用户失败：用户ID不存在："+getCurrentUser().getUsername()); 
             return null;
         }
         userService.deleteUser(userId);
+        LogUtils.info(log,"删除用户成功："+getCurrentUser().getUsername()); 
         return "deleteSuccess";
     }
 
     public String batchDelete() {
         if (StringUtils.isEmpty(userIds)) {
+            LogUtils.warn(log,"删除用户失败：用户ID不存在："+getCurrentUser().getUsername());
             return null;
         }
-
+        LogUtils.info(log,"删除用户成功："+getCurrentUser().getUsername());
         userService.deleteUsers(userIds);
         return "deleteSuccess";
     }
 
     public String modifyPassword() {
-    	String result = "json";
-    	boolean flag = true;
+        String result = "json";
+        boolean flag = true;
         if (StringUtils.isEmpty(currentPassword)) {
             this.addFieldError("error_current_password", "当前密码不能为空！");
             flag = false;
-        } 
-        
+        }
+
         if (StringUtils.isEmpty(newPassword)) {
             this.addFieldError("error_new_password", "新密码不能为空！");
             flag = false;
@@ -125,31 +123,38 @@ public class UserMgtAction extends ActionSupport {
             this.addFieldError("error_new_password", "新密码长度不能小于6位！");
             flag = false;
         }
-        if(StringUtils.isEmpty(confirmPassword)){
-        	 this.addFieldError("error_confirm_password", "确认密码不能为空！");
-             flag = false;
+        if (StringUtils.isEmpty(confirmPassword)) {
+            this.addFieldError("error_confirm_password", "确认密码不能为空！");
+            flag = false;
         }
-        if(!flag){
-        	return result;
+        if (!flag) {
+            addDataMap();
+            LogUtils.debug(log,"更新密码数据验证失败："+getCurrentUser().getUsername());
+            return result;
         }
-        
+
         if (!userService.validatePassword(currentPassword)) {
             this.addFieldError("error_current_password", "当前密码不正确！");
+            addDataMap();
+            LogUtils.debug(log,"更新密码数据验证失败："+getCurrentUser().getUsername());
             return result;
-        } 
-        
+        }
+
         if (!newPassword.equals(confirmPassword)) {
             this.addFieldError("error_confirm_password", "两次密码不一致！");
+            addDataMap();
+            LogUtils.debug(log,"更新密码数据验证失败："+getCurrentUser().getUsername());
             return result;
-        } 
-            try {
-				userService.modifyPassword(newPassword);
-				actionStatus =Action.SUCCESS;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+        }
+        try {
+            userService.modifyPassword(newPassword);
+            setActionStatus(Action.SUCCESS);
+            addDataMap();
+            LogUtils.info(log,"更新密码成功："+getCurrentUser().getUsername());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-            
         return result;
     }
 
@@ -157,28 +162,26 @@ public class UserMgtAction extends ActionSupport {
         if (userId == 0) {
             return null;
         }
-        user = userService.getUser(userId);
-        return "initModifySuccess";
+        addDataMap("user",userService.getUser(userId));
+        return "json";
 
     }
 
     public String modify() {
+        String result ="json";
         if (!validateData()) {
-            return Action.INPUT;
+            addDataMap();
+            return result;
         }
-
-        /*
-         * User user = new User(); user.setId(userId); user.setUsername(username); user.setPassword(password); Role role
-         * = new Role(); role.setId(roleId); role.addUser(user); user.setRole(role);
-         */
         try {
             userService.modifyUser(user);
+            setActionStatus(Action.SUCCESS);
+            addDataMap();
         } catch (DmcBizException e) {
             this.addActionMessage("修改失败：" + e.getMessage());
-            // msg = "修改失败：" + e.getMessage();
-            return Action.INPUT;
+            addDataMap();
         }
-        return "modifySuccess";
+        return result;
 
     }
 
@@ -204,96 +207,26 @@ public class UserMgtAction extends ActionSupport {
         return roles;
     }
 
-    // public UserVo getUserVo() {
-    // return userVo;
-    // }
-    //
-    // public void setUserVo(UserVo userVo) {
-    // this.userVo = userVo;
-    // }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
-    }
-
     private boolean validateData() {
         boolean result = true;
         String username = user.getUsername();
         if (StringUtils.isEmpty(username)) {
-
-            this.addFieldError("user.username", "用户名不能为空！");
+            this.addFieldError("error_user_username", "用户名不能为空！");
             result = false;
         }
 
         if (StringUtils.isEmpty(user.getPassword())) {
-            this.addFieldError("user.password", "密码不能为空！");
-            // passwordMsg = "密码不能为空！";
+            this.addFieldError("error_user_password", "密码不能为空！");
             result = false;
         } else if (user.getPassword().length() < 6) {
-            this.addFieldError("user.password", "密码长度不能小于6位！");
-            // passwordMsg = "密码长度不能小于6位！";
+            this.addFieldError("error_user_password", "密码长度不能小于6位！");
             result = false;
         }
-
         if (user.getRole().getId() == 0) {
-            this.addFieldError("user.role.id", "请选择角色！");
-            // roleIdMsg = "清选择角色！";
+            this.addFieldError("error_user_role_id", "请选择角色！");
             result = false;
         }
-
         return result;
-    }
-
-    public String getUsernameMsg() {
-        return usernameMsg;
-    }
-
-    public void setUsernameMsg(String usernameMsg) {
-        this.usernameMsg = usernameMsg;
-    }
-
-    public String getPasswordMsg() {
-        return passwordMsg;
-    }
-
-    public void setPasswordMsg(String passwordMsg) {
-        this.passwordMsg = passwordMsg;
-    }
-
-    public String getRoleIdMsg() {
-        return roleIdMsg;
-    }
-
-    public void setRoleIdMsg(String roleIdMsg) {
-        this.roleIdMsg = roleIdMsg;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
     }
 
     public String getUserIds() {
@@ -312,6 +245,7 @@ public class UserMgtAction extends ActionSupport {
         this.userId = userId;
     }
 
+//    @js
     public User getUser() {
         if (user == null) {
             user = new User();
@@ -324,14 +258,6 @@ public class UserMgtAction extends ActionSupport {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public int getSuccess() {
-        return success;
-    }
-
-    public void setSuccess(int success) {
-        this.success = success;
     }
 
     public String getCurrentPassword() {
@@ -358,16 +284,36 @@ public class UserMgtAction extends ActionSupport {
         this.confirmPassword = confirmPassword;
     }
 
-	public String getActionStatus() {
-		return actionStatus;
-	}
+    public String getActionStatus() {
+        return actionStatus;
+    }
 
-	public void setActionStatus(String actionStatus) {
-		this.actionStatus = actionStatus;
-	}
+    public void setActionStatus(String actionStatus) {
+        this.actionStatus = actionStatus;
+    }
 
-/*	public Map<String, Object> getDataMap() {
-		return dataMap;
-	}*/
+//    public Map<String, String> getFieldErrors() {
+//        return fieldErrors;
+//    }
+//
+//    public void setFieldErrors(Map<String, String> fieldErrors) {
+//        this.fieldErrors = fieldErrors;
+//    }
+
+    /*
+     * public Map<String, Object> getDataMap() { return dataMap; }
+     */
+
+  /*  private Map<String, String> addFieldError(String field, String message) {
+        fieldErrors.put(field, message);
+        return fieldErrors;
+    }
+
+    private List<String> addActionMessage(String message) {
+        actionMessages.add(message);
+        return actionMessages;
+    }
+*/
+   
 
 }

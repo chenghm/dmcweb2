@@ -1,8 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<c:set var="pageTitle" value="Access Denied" scope="request"/>
-
-<p>You are not allowed to access this page. Try logging in as admin1@example.com / admin1</p>
+<html>
+<body>
+	<h1>HTTP Status 403 - Access is denied</h1>
+	<h3>Message : ${message}</h3>
+</body>
+</html>

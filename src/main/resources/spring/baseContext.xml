@@ -30,5 +30,5 @@
 
 	<bean id="BaseDao" class="com.cinsec.dmc.base.dao.impl.BaseDao" />
 	<bean id="BaseAppDao" class="com.cinsec.dmc.base.dao.impl.BaseAppDao" />
-	
+
 </beans>

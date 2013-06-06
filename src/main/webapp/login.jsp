@@ -128,5 +128,6 @@
 		</div>
 
 	</div>
+	<input type="hidden" id="elementOnLoginPage"/>
 </body>
 </html>

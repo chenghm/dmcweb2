@@ -96,8 +96,7 @@
 							<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								<tr>
 									<td height="46" colspan="3" valign="top"><img
-										src="common/images/login_title2_basic_blue.gif" />
-									</td>
+										src="common/images/login_title2_basic_blue.gif" /></td>
 								</tr>
 								<tr>
 									<td colspan="3" style="color: red" id="retInfo">${retInfo

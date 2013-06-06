@@ -84,7 +84,8 @@
 			<div class="right_header">
 				Welcome
 				<sec:authentication property="principal.username" />
-				| <a href="" id="update-password">修改密码</a> | <a href="${pageContext.request.contextPath}/logout" class="ask">退出<img
+				| <a href="" id="update-password">修改密码</a> | <a
+					href="${pageContext.request.contextPath}/logout" class="ask">退出<img
 					src="${pageContext.request.contextPath}/resources/img/user_logout.png"
 					border="0" align="absbottom" /></a>
 			</div>
@@ -142,8 +143,8 @@
 			<div id="message-dialog" title="修改密码">
 				<p>
 					<span class="ui-icon ui-icon-circle-check"
-						style="float: left; margin: 0 7px 50px 0;"></span>
-						<span id="message-content"></span>
+						style="float: left; margin: 0 7px 50px 0;"></span> <span
+						id="message-content"></span>
 				</p>
 			</div>
 
@@ -292,8 +293,8 @@
 							</ul>
 						</div>
 						<sec:authorize access="hasRole('ROLE_ADMIN')">
-						<a class="menuitem"
-							href="${pageContext.request.contextPath}/userMgtAction!findAll">用户管理</a>
+							<a class="menuitem"
+								href="${pageContext.request.contextPath}/userMgtAction!findAll">用户管理</a>
 						</sec:authorize>
 						<a class="menuitem" href="">Blue button</a> <a
 							class="menuitem_green" href="">Green button</a> <a

@@ -4,9 +4,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
 	<!--加载数据库模板 -->
-	<import resource="dataBaseContext.xml"/>
+	<import resource="dataBaseContext.xml" />
 
 	<!--加载base模板 -->
-<!-- <import resource="baseContext.xml" /> -->
+	<!-- <import resource="baseContext.xml" /> -->
 
 </beans>

@@ -16,7 +16,7 @@ public interface IUserService {
 
     int createUser(User user) throws DmcBizException;
 
-    @RolesAllowed("ROLE_ADMIN")
+
     List<User> getUsers(int pageNo);
 
     void deleteUser(int id);
