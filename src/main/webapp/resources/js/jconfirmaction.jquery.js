@@ -21,7 +21,19 @@ jQuery.fn.jLoadAction = function (options) {
 			$(this).bind('click', function(e) {
 				e.preventDefault();
 				 $('.right_content').load(thisHref,function(response,status,xhr){
-					// alert(status);
+					 
+//						alert($("#elementOnLoginPage").length);
+//					 alert(response.indexOf("elementOnLoginPage"));
+					// window.location.replace("login.jsp");
+					 
+					 /*alert(response);
+					 alert(response.indexOf("elementOnLoginPage"));
+					 if(response.indexOf("elementOnLoginPage")!=-1){
+						 window.location.herf="/login.jsp";
+					 }*/
+					/*alert(status);
+					alert(response);
+					alert(xhr);*/
 				 });
 				
 			});
