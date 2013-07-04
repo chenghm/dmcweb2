@@ -11,10 +11,11 @@
 	<constant name="struts.custom.i18n.resources" value="i18n.messages" />
 
 	<package name="dmc" extends="json-default" namespace="/">
-	    <interceptors>
-    <interceptor name="sessionInterceptor" class="com.cinsec.dmc.base.interceptor.SessionInterceptor" />
-	</interceptors>
-	    <default-interceptor-ref name="sessionInterceptor" />
+		<interceptors>
+			<interceptor name="sessionInterceptor"
+				class="com.cinsec.dmc.base.interceptor.SessionInterceptor" />
+		</interceptors>
+		<default-interceptor-ref name="sessionInterceptor" />
 		<global-results>
 			<result name="accessDeniedException">/errors/403.jsp</result>
 			<result name="json" type="json">
@@ -26,7 +27,7 @@
 				exception="org.springframework.security.access.AccessDeniedException"
 				name="accessDeniedException" />
 		</global-exception-mappings>
-	
+
 		<action name="userMgtAction" class="userMgtAction">
 			<interceptor-ref name="jsonValidationWorkflowStack" />
 			<interceptor-ref name="sessionInterceptor" />

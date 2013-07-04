@@ -128,6 +128,6 @@
 		</div>
 
 	</div>
-	<input type="hidden" id="elementOnLoginPage"/>
+	<input type="hidden" id="elementOnLoginPage" value="1" />
 </body>
 </html>

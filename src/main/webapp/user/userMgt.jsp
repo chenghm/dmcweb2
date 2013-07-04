@@ -92,12 +92,11 @@
 			$("#dialog-form").dialog("open");
 		});
 		$("a[name='editLink']").bind('click', function(e) {
-			alert($("#elementOnLoginPage").length);
 			e.preventDefault();
 			url = 'userMgtAction!modify';//modify
 			var thisHref = $(this).attr('href');
 			$.getJSON(thisHref, function(data,status,xhr) {
-				alert(status);
+			//	alert(status);
 				$("#dialog-form").dialog("open");
 				$("#user\\.id").val(data.user.id);
 				$("#user\\.username").val(data.user.username);
@@ -181,7 +180,7 @@
 		$('a').jLoadAction();
 
 		//全局的ajax访问，处理ajax清求时sesion超时
-        $.ajaxSetup({ 
+     /*    $.ajaxSetup({ 
             contentType:"application/x-www-form-urlencoded;charset=utf-8", 
             complete:function(XMLHttpRequest,textStatus){ 
                     var sessionstatus=XMLHttpRequest.getResponseHeader("sessionstatus"); //通过XMLHttpRequest取得响应头，sessionstatus，
@@ -192,7 +191,7 @@ alert(sessionstatus);
                                         window.top.location.replace("login.jsp"); 
                                 } 
                      } 
-          });
+          }); */
 	});
 </script>
 <title>用戶管理</title>

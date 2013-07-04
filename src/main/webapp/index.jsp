@@ -58,12 +58,12 @@
 		$('a').jLoadAction();
 		$(this).jUpdatePasswordAction();
 	});
-	$(document).ajaxError(function() {
+	/* $(document).ajaxError(function() {
 		alert("ajax error");
-		});
+		}); */
 
 	//全局的ajax访问，处理ajax清求时sesion超时
-    $.ajaxSetup({ 
+   /*  $.ajaxSetup({ 
         contentType:"application/x-www-form-urlencoded;charset=utf-8", 
         complete:function(XMLHttpRequest,textStatus){ 
                 var sessionstatus=XMLHttpRequest.getResponseHeader("sessionstatus"); //通过XMLHttpRequest取得响应头，sessionstatus，
@@ -74,7 +74,7 @@ alert(sessionstatus);
                                     window.top.location.replace("login.jsp"); 
                             } 
                  } 
-      });
+      }); */
 </script>
 <script type="text/javascript">
 	$(function($) {
@@ -99,7 +99,7 @@ alert(sessionstatus);
 			</div>
 
 			<div class="right_header">
-				Welcome
+				欢迎
 				<sec:authentication property="principal.username" />
 				| <a href="" id="update-password">修改密码</a> | <a
 					href="${pageContext.request.contextPath}/logout" class="ask">退出<img
